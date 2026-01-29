@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="tr" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Osman Taşkın | Full Stack Developer & UI/UX Designer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: '#f59e0b',
+                        secondary: '#3b82f6',
+                        dark: {
+                            bg: '#0a0f1c',
+                            surface: '#151b2b',
+                            border: '#2d3748'
+                        }
+                    },
+                    animation: {
+                        'fade-up': 'fadeUp 0.8s ease-out forwards',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        fadeUp: {
+                            '0%': { opacity: '0', transform: 'translateY(30px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .gradient-text {
+            background: linear-gradient(135deg, #f59e0b 0%, #f97316 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .glass {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .dark .glass {
+            background: rgba(21, 27, 43, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .hero-glow {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(245,158,11,0.15) 0%, transparent 70%);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+        }
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+        .scroll-reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+<base target="_blank">
+</head>
+<body class="bg-gray-50 dark:bg-dark-bg text-gray-900 dark:text-gray-100 transition-colors duration-300 font-sans antialiased">
+
+    <!-- Progress Bar -->
+    <div class="fixed top-0 left-0 h-1 bg-gradient-to-r from-amber-400 to-orange-500 z-50" id="progressBar" style="width: 0%"></div>
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-40 transition-all duration-300" id="navbar">
+        <div class="glass mx-4 mt-4 rounded-2xl px-6 py-4 max-w-7xl lg:mx-auto">
+            <div class="flex justify-between items-center">
+                <a href="#" class="text-2xl font-bold tracking-tight">
+                    <span class="text-primary">Osman</span> Taşkın
+                </a>
+                
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#hakkimda" class="text-sm font-medium hover:text-primary transition-colors">Hakkımda</a>
+                    <a href="#hizmetler" class="text-sm font-medium hover:text-primary transition-colors">Hizmetler</a>
+                    <a href="#portfoy" class="text-sm font-medium hover:text-primary transition-colors">Portföy</a>
+                    <a href="#iletisim" class="text-sm font-medium hover:text-primary transition-colors">İletişim</a>
+                    <button onclick="toggleDarkMode()" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-800 transition-colors">
+                        <svg class="w-5 h-5 hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                        <svg class="w-5 h-5 block dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+                    </button>
+                    <a href="#iletisim" class="bg-primary text-gray-900 px-6 py-2.5 rounded-full font-semibold text-sm hover:bg-amber-400 transition-all transform hover:scale-105 shadow-lg shadow-amber-500/25">
+                        Projeyi Başlat
+                    </a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button onclick="toggleMobileMenu()" class="md:hidden p-2">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobileMenu" class="hidden md:hidden glass mx-4 mt-2 rounded-2xl p-6 border-t border-gray-200 dark:border-gray-800">
+            <div class="flex flex-col space-y-4">
+                <a href="#hakkimda" onclick="toggleMobileMenu()" class="text-lg font-medium">Hakkımda</a>
+                <a href="#hizmetler" onclick="toggleMobileMenu()" class="text-lg font-medium">Hizmetler</a>
+                <a href="#portfoy" onclick="toggleMobileMenu()" class="text-lg font-medium">Portföy</a>
+                <a href="#iletisim" onclick="toggleMobileMenu()" class="text-lg font-medium">İletişim</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden">
+        <div class="hero-glow animate-pulse-slow"></div>
+        
+        <div class="relative z-10 max-w-6xl mx-auto px-6 text-center">
+            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass border border-amber-500/20 bg-amber-500/10 text-amber-600 dark:text-amber-400 text-sm font-medium mb-8 animate-fade-up">
+                <span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
+                Vibe Coding Expert & Full Stack Developer
+            </div>
+            
+            <h1 class="text-5xl md:text-7xl font-bold tracking-tight mb-6 leading-tight animate-fade-up" style="animation-delay: 0.1s">
+                Fikirden Dijital Ürüne — <br>
+                <span class="gradient-text">Hızlı, Güvenilir, Ölçeklenebilir</span>
+            </h1>
+            
+            <p class="text-xl md:text-2xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto mb-12 leading-relaxed animate-fade-up" style="animation-delay: 0.2s">
+                Modern web ve mobil teknolojilerle, işletmenizin dijital dönüşümünü tek elden yönetiyorum. 
+                <span class="text-gray-900 dark:text-white font-semibold">Kurumsal standartlarda, startup hızında.</span>
+            </p>
+            
+            <div class="flex flex-col sm:flex-row gap-4 justify-center items-center animate-fade-up" style="animation-delay: 0.3s">
+                <a href="#iletisim" class="group bg-primary text-gray-900 px-8 py-4 rounded-full font-bold text-lg hover:bg-amber-400 transition-all transform hover:scale-105 shadow-xl shadow-amber-500/25 flex items-center gap-2">
+                    Projemi Konuşalım
+                    <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                </a>
+                <a href="#portfoy" class="px-8 py-4 rounded-full font-semibold text-lg border-2 border-gray-300 dark:border-gray-700 hover:border-primary hover:text-primary transition-all">
+                    Referansları İncele
+                </a>
+            </div>
+
+            <!-- Stats -->
+            <div class="mt-20 grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto animate-fade-up" style="animation-delay: 0.4s">
+                <div class="text-center">
+                    <div class="text-4xl font-bold text-primary mb-1">10+</div>
+                    <div class="text-sm text-gray-500 dark:text-gray-400">Yıl Deneyim</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-4xl font-bold text-primary mb-1">50+</div>
+                    <div class="text-sm text-gray-500 dark:text-gray-400">Tamamlanan Proje</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-4xl font-bold text-primary mb-1">%98</div>
+                    <div class="text-sm text-gray-500 dark:text-gray-400">Müşteri Memnuniyeti</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-4xl font-bold text-primary mb-1">3-6</div>
+                    <div class="text-sm text-gray-500 dark:text-gray-400">Hafta Ort. Teslim</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="hakkimda" class="py-32 relative scroll-reveal">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="grid md:grid-cols-2 gap-16 items-center">
+                <div>
+                    <span class="text-primary font-semibold tracking-wider uppercase text-sm">Hakkımda</span>
+                    <h2 class="text-4xl md:text-5xl font-bold mt-4 mb-6">Merhaba, Ben Osman</h2>
+                    <p class="text-lg text-gray-600 dark:text-gray-400 leading-relaxed mb-6">
+                        On yılı aşkın süredir yazılım geliştirme ve dijital tasarım ekosisteminde çalışıyorum. 
+                        Teknik bilgi birikimimi, iş stratejisiyle birleştirerek, hem startup'ların ilk adımlarını 
+                        atmalarına hem de kurumsal firmaların dijital dönüşümlerine eşlik ediyorum.
+                    </p>
+                    <p class="text-lg text-gray-600 dark:text-gray-400 leading-relaxed mb-8">
+                        Son dönemde <span class="text-primary font-semibold">"Vibe Coding"</span> metodolojisini benimseyerek, 
+                        projelerin hayata geçiş süresini %60 oranında kısaltırken, kod kalitesinden ve 
+                        güvenlik standartlarından ödün vermiyorum.
+                    </p>
+                    
+                    <div class="flex flex-wrap gap-3">
+                        <span class="px-4 py-2 rounded-full bg-gray-200 dark:bg-dark-surface border border-gray-300 dark:border-dark-border text-sm font-medium">React</span>
+                        <span class="px-4 py-2 rounded-full bg-gray-200 dark:bg-dark-surface border border-gray-300 dark:border-dark-border text-sm font-medium">Next.js</span>
+                        <span class="px-4 py-2 rounded-full bg-gray-200 dark:bg-dark-surface border border-gray-300 dark:border-dark-border text-sm font-medium">TypeScript</span>
+                        <span class="px-4 py-2 rounded-full bg-gray-200 dark:bg-dark-surface border border-gray-300 dark:border-dark-border text-sm font-medium">Node.js</span>
+                        <span class="px-4 py-2 rounded-full bg-gray-200 dark:bg-dark-surface border border-gray-300 dark:border-dark-border text-sm font-medium">React Native</span>
+                        <span class="px-4 py-2 rounded-full bg-gray-200 dark:bg-dark-surface border border-gray-300 dark:border-dark-border text-sm font-medium">Flutter</span>
+                        <span class="px-4 py-2 rounded-full bg-gray-200 dark:bg-dark-surface border border-gray-300 dark:border-dark-border text-sm font-medium">Figma</span>
+                        <span class="px-4 py-2 rounded-full bg-gray-200 dark:bg-dark-surface border border-gray-300 dark:border-dark-border text-sm font-medium">AWS</span>
+                    </div>
+                </div>
+                <div class="relative">
+                    <div class="absolute inset-0 bg-gradient-to-tr from-primary/20 to-purple-500/20 rounded-3xl blur-2xl"></div>
+                    <div class="relative glass rounded-3xl p-8 border border-gray-200 dark:border-gray-800">
+                        <div class="space-y-6">
+                            <div class="flex items-start gap-4">
+                                <div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                                    <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                                </div>
+                                <div>
+                                    <h3 class="font-bold text-lg mb-1">Hızlı MVP Geliştirme</h3>
+                                    <p class="text-gray-600 dark:text-gray-400 text-sm">AI destekli geliştirme ile fikrinizi hızla test edilebilir ürüne dönüştürme.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-4">
+                                <div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                                    <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+                                </div>
+                                <div>
+                                    <h3 class="font-bold text-lg mb-1">Kurumsal Güvenlik</h3>
+                                    <p class="text-gray-600 dark:text-gray-400 text-sm">Enterprise-grade güvenlik standartlarında, ölçeklenebilir mimariler.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-4">
+                                <div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                                    <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"></path></svg>
+                                </div>
+                                <div>
+                                    <h3 class="font-bold text-lg mb-1">UX-First Yaklaşım</h3>
+                                    <p class="text-gray-600 dark:text-gray-400 text-sm">Kullanıcı deneyimi ve görsel tasarımı teknik mimariyle bütünleştirme.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="hizmetler" class="py-32 bg-gray-100 dark:bg-dark-surface/50 scroll-reveal">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <span class="text-primary font-semibold tracking-wider uppercase text-sm">Hizmetler</span>
+                <h2 class="text-4xl md:text-5xl font-bold mt-4">Teknik Çözüm Ortağınız</h2>
+                <p class="text-gray-600 dark:text-gray-400 mt-4 max-w-2xl mx-auto">
+                    İhtiyacınıza göre esnek çalışma modelleri: Proje bazlı, retainer veya danışmanlık.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Service 1 -->
+                <div class="group bg-white dark:bg-dark-surface rounded-2xl p-8 border border-gray-200 dark:border-dark-border hover:border-primary/50 transition-all duration-300 hover:transform hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/5">
+                    <div class="w-14 h-14 rounded-xl bg-amber-100 dark:bg-amber-900/20 flex items-center justify-center text-primary mb-6 group-hover:scale-110 transition-transform">
+                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Vibe Coding</h3>
+                    <p class="text-gray-600 dark:text-gray-400 leading-relaxed mb-4">
+                        AI destekli hızlı geliştirme ile MVP'yi haftalar içinde değil, günler içinde teslim.
+                    </p>
+                    <ul class="text-sm text-gray-500 dark:text-gray-500 space-y-2">
+                        <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-primary"></span>Rapid Prototyping</li>
+                        <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-primary"></span>AI-Assisted Development</li>
+                        <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-primary"></span>Fast Iteration</li>
+                    </ul>
+                </div>
+
+                <!-- Service 2 -->
+                <div class="group bg-white dark:bg-dark-surface rounded-2xl p-8 border border-gray-200 dark:border-dark-border hover:border-primary/50 transition-all duration-300 hover:transform hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/5">
+                    <div class="w-14 h-14 rounded-xl bg-blue-100 dark:bg-blue-900/20 flex items-center justify-center text-blue-600 mb-6 group-hover:scale-110 transition-transform">
+                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"></path></svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Web Geliştirme</h3>
+                    <p class="text-gray-600 dark:text-gray-400 leading-relaxed mb-4">
+                        Next.js ve modern stack ile SEO dostu, yüksek performanslı web uygulamaları.
+                    </p>
+                    <ul class="text-sm text-gray-500 dark:text-gray-500 space-y-2">
+                        <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-blue-600"></span>Next.js / React</li>
+                        <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-blue-600"></span>Headless CMS</li>
+                        <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-blue-600"></span>E-Ticaret Çözümleri</li>
+                    </ul>
+                </div>
+
+                <!-- Service 3 -->
+                <div class="group bg-white dark:bg-dark-surface rounded-2xl p-8 border border-gray-200 dark:border-dark-border hover:border-primary/50 transition-all duration-300 hover:transform hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/5">
+                    <div class="w-14 h-14 rounded-xl bg-purple-100 dark:bg-purple-900/20 flex items-center justify-center text-purple-600 mb-6 group-hover:scale-110 transition-transform">
+                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Mobil Uygulama</h3>
+                    <p class="text-gray-600 dark:text-gray-400 leading-relaxed mb-4">
+                        React Native ve Flutter ile çift platform (iOS/Android), tek kod tabanı.
+                    </p>
+                    <ul class="text-sm text-gray-500 dark:text-gray-500 space-y-2">
+                        <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-purple-600"></span>React Native</li>
+                        <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-purple-600"></span>Flutter</li>
+                        <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-purple-600"></span>App Store Optimizasyonu</li>
+                    </ul>
+                </div>
+
+                <!-- Service 4 -->
+                <div class="group bg-white dark:bg-dark-surface rounded-2xl p-8 border border-gray-200 dark:border-dark-border hover:border-primary/50 transition-all duration-300 hover:transform hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/5">
+                    <div class="w-14 h-14 rounded-xl bg-green-100 dark:bg-green-900/20 flex items-center justify-center text-green-600 mb-6 group-hover:scale-110 transition-transform">
+                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"></path></svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">UI/UX Tasarım</h3>
+                    <p class="text-gray-600 dark:text-gray-400 leading-relaxed mb-4">
+                        Kullanıcı araştırmasından arayüz tasarımına, Figma'dan üretime kadar.
+                    </p>
+                    <ul class="text-sm text-gray-500 dark:text-gray-500 space-y-2">
+                        <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-green-600"></span>Kullanıcı Araştırması</li>
+                        <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-green-600"></span>Prototipleme</li>
+                        <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-green-600"></span>Tasarım Sistemleri</li>
+                    </ul>
+                </div>
+
+                <!-- Service 5 -->
+                <div class="group bg-white dark:bg-dark-surface rounded-2xl p-8 border border-gray-200 dark:border-dark-border hover:border-primary/50 transition-all duration-300 hover:transform hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/5 md:col-span-2 lg:col-span-2">
+                    <div class="flex flex-col md:flex-row md:items-center gap-6">
+                        <div class="w-14 h-14 rounded-xl bg-red-100 dark:bg-red-900/20 flex items-center justify-center text-red-600 flex-shrink-0 group-hover:scale-110 transition-transform">
+                            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path></svg>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold mb-3">Teknik Danışmanlık</h3>
+                            <p class="text-gray-600 dark:text-gray-400 leading-relaxed mb-4">
+                                Mevcut ekibinize teknik liderlik, code review, mimari danışmanlık ve dijital transformasyon stratejisi. 
+                                Legacy sistem modernizasyonu veya yeni proje mimarisi kurulumu.
+                            </p>
+                            <ul class="text-sm text-gray-500 dark:text-gray-500 space-y-2 md:flex md:gap-6 md:space-y-0">
+                                <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-red-600"></span>Code Review</li>
+                                <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-red-600"></span>Mimari Danışmanlık</li>
+                                <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-red-600"></span>Digital Transformation</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio Section -->
+    <section id="portfoy" class="py-32 scroll-reveal">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-16">
+                <div>
+                    <span class="text-primary font-semibold tracking-wider uppercase text-sm">Portföy</span>
+                    <h2 class="text-4xl md:text-5xl font-bold mt-4">Seçilmiş İşler</h2>
+                    <p class="text-gray-600 dark:text-gray-400 mt-4 max-w-xl">
+                        Her projede teknik mükemmellik ve kullanıcı odaklı yaklaşımı bir araya getiriyorum.
+                    </p>
+                </div>
+                <a href="#" class="mt-6 md:mt-0 text-primary font-semibold hover:underline flex items-center gap-2">
+                    Tüm Projeler 
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                </a>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- Project 1 -->
+                <div class="group cursor-pointer">
+                    <div class="relative overflow-hidden rounded-2xl mb-4 aspect-video bg-gray-200 dark:bg-dark-surface border border-gray-200 dark:border-dark-border">
+                        <div class="absolute inset-0 bg-gradient-to-br from-blue-600/20 to-purple-600/20 group-hover:scale-105 transition-transform duration-500"></div>
+                        <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gray-900/60">
+                            <span class="bg-white text-gray-900 px-6 py-3 rounded-full font-semibold">Projeyi İncele</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3 mb-2">
+                        <span class="px-3 py-1 rounded-full bg-blue-100 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 text-xs font-semibold">FinTech</span>
+                        <span class="text-sm text-gray-500">2024</span>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-2 group-hover:text-primary transition-colors">Kurumsal Finans Dashboard</h3>
+                    <p class="text-gray-600 dark:text-gray-400">React, TypeScript ve Node.js ile geliştirilmiş, gerçek zamanlı veri analizi sunan kurumsal finans yönetim platformu.</p>
+                </div>
+
+                <!-- Project 2 -->
+                <div class="group cursor-pointer">
+                    <div class="relative overflow-hidden rounded-2xl mb-4 aspect-video bg-gray-200 dark:bg-dark-surface border border-gray-200 dark:border-dark-border">
+                        <div class="absolute inset-0 bg-gradient-to-br from-amber-600/20 to-orange-600/20 group-hover:scale-105 transition-transform duration-500"></div>
+                        <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gray-900/60">
+                            <span class="bg-white text-gray-900 px-6 py-3 rounded-full font-semibold">Projeyi İncele</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3 mb-2">
+                        <span class="px-3 py-1 rounded-full bg-amber-100 dark:bg-amber-900/20 text-amber-700 dark:text-amber-300 text-xs font-semibold">E-Ticaret</span>
+                        <span class="text-sm text-gray-500">2024</span>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-2 group-hover:text-primary transition-colors">Headless Commerce Platformu</h3>
+                    <p class="text-gray-600 dark:text-gray-400">Next.js, Shopify API ve Tailwind CSS ile modern kuaför e-ticaret ekosistemi.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="iletisim" class="py-32 bg-gray-100 dark:bg-dark-surface/50 scroll-reveal">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="grid md:grid-cols-2 gap-16">
+                <div>
+                    <span class="text-primary font-semibold tracking-wider uppercase text-sm">İletişim</span>
+                    <h2 class="text-4xl md:text-5xl font-bold mt-4 mb-6">Projeyi Başlatalım</h2>
+                    <p class="text-lg text-gray-600 dark:text-gray-400 leading-relaxed mb-8">
+                        Yeni bir ürün mü geliştiriyorsunuz? Mevcut sisteminizi mi modernize etmeniz gerekiyor? 
+                        30 dakikalık ücretsiz keşif görüşmesi için formu doldurun.
+                    </p>
+
+                    <div class="space-y-6">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-full bg-white dark:bg-dark-bg flex items-center justify-center shadow-md">
+                                <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                            </div>
+                            <div>
+                                <div class="text-sm text-gray-500 dark:text-gray-400">E-posta</div>
+                                <div class="font-semibold">hello@osmantaskin.dev</div>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-full bg-white dark:bg-dark-bg flex items-center justify-center shadow-md">
+                                <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                            </div>
+                            <div>
+                                <div class="text-sm text-gray-500 dark:text-gray-400">Lokasyon</div>
+                                <div class="font-semibold">İstanbul / Remote (Global)</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-10 flex gap-4">
+                        <a href="#" class="w-10 h-10 rounded-full bg-white dark:bg-dark-bg border border-gray-300 dark:border-gray-700 flex items-center justify-center hover:border-primary hover:text-primary transition-colors">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-white dark:bg-dark-bg border border-gray-300 dark:border-gray-700 flex items-center justify-center hover:border-primary hover:text-primary transition-colors">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="bg-white dark:bg-dark-surface rounded-3xl p-8 border border-gray-200 dark:border-dark-border shadow-xl">
+                    <form onsubmit="event.preventDefault(); alert('Mesajınız gönderildi!');" class="space-y-6">
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-medium mb-2">Ad Soyad</label>
+                                <input type="text" class="w-full px-4 py-3 rounded-xl bg-gray-50 dark:bg-dark-bg border border-gray-200 dark:border-dark-border focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" placeholder="John Doe" required>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-2">Firma</label>
+                                <input type="text" class="w-full px-4 py-3 rounded-xl bg-gray-50 dark:bg-dark-bg border border-gray-200 dark:border-dark-border focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" placeholder="Firma Adı (Opsiyonel)">
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium mb-2">E-posta</label>
+                            <input type="email" class="w-full px-4 py-3 rounded-xl bg-gray-50 dark:bg-dark-bg border border-gray-200 dark:border-dark-border focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" placeholder="ornek@firma.com" required>
+                        </div>
+
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-medium mb-2">Proje Türü</label>
+                                <select class="w-full px-4 py-3 rounded-xl bg-gray-50 dark:bg-dark-bg border border-gray-200 dark:border-dark-border focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all">
+                                    <option>Web Geliştirme</option>
+                                    <option>Mobil Uygulama</option>
+                                    <option>Vibe Coding / MVP</option>
+                                    <option>Danışmanlık</option>
+                                    <option>Diğer</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-2">Bütçe Aralığı</label>
+                                <select class="w-full px-4 py-3 rounded-xl bg-gray-50 dark:bg-dark-bg border border-gray-200 dark:border-dark-border focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all">
+                                    <option>10.000 - 30.000 TL</option>
+                                    <option>30.000 - 50.000 TL</option>
+                                    <option>50.000 - 100.000 TL</option>
+                                    <option>100.000+ TL</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Mesaj</label>
+                            <textarea rows="4" class="w-full px-4 py-3 rounded-xl bg-gray-50 dark:bg-dark-bg border border-gray-200 dark:border-dark-border focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all resize-none" placeholder="Projeniz hakkında kısa bir bilgi verin..." required></textarea>
+                        </div>
+
+                        <button type="submit" class="w-full bg-primary text-gray-900 font-bold py-4 rounded-xl hover:bg-amber-400 transition-all transform hover:scale-[1.02] shadow-lg shadow-amber-500/25">
+                            Gönder
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-8 border-t border-gray-200 dark:border-dark-border">
+        <div class="max-w-6xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="text-sm text-gray-500 dark:text-gray-400">
+                © 2024 Osman Taşkın. Tüm hakları saklıdır.
+            </div>
+            <div class="flex gap-6 text-sm text-gray-500 dark:text-gray-400">
+                <a href="#" class="hover:text-primary transition-colors">Gizlilik Politikası</a>
+                <a href="#" class="hover:text-primary transition-colors">Kullanım Koşulları</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Dark Mode Toggle
+        function toggleDarkMode() {
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                localStorage.theme = 'light';
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.theme = 'dark';
+            }
+        }
+
+        // Check local storage for theme
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+
+        // Mobile Menu Toggle
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('hidden');
+        }
+
+        // Scroll Progress Bar
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById('progressBar').style.width = scrolled + '%';
+            
+            // Navbar background on scroll
+            const navbar = document.getElementById('navbar');
+            if (winScroll > 50) {
+                navbar.classList.add('bg-white/80', 'dark:bg-dark-bg/80', 'backdrop-blur-md');
+            } else {
+                navbar.classList.remove('bg-white/80', 'dark:bg-dark-bg/80', 'backdrop-blur-md');
+            }
+        });
+
+        // Scroll Reveal Animation
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.scroll-reveal').forEach((el) => observer.observe(el));
+    </script>
+</body>
+</html>
